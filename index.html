@@ -26,7 +26,7 @@
             <a href="#">Inicio</a>
             <a href="#bootcamps">Bootcamps</a>
             <a href="#beneficios">Beneficios</a>
-            <a class="btn" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;" href="#inscripcion">Inscribirme</a>
+            <a class="btn" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;" href="inscripcion.html">Inscribirme</a>
         </nav>
     </header>
 
@@ -37,7 +37,7 @@
                 <p>Acelera tu carrera con bootcamps intensivos liderados por expertos en la industria. Formación
                     gratuita de alto nivel.</p>
                 <div class="hero-btns">
-                    <a class="btn" href="#inscripcion">Empezar ahora</a>
+                    <a class="btn" href="inscripcion.html">Empezar ahora</a>
                 </div>
             </div>
             <div class="hero-image" data-aos="fade-left">
@@ -45,37 +45,23 @@
             </div>
         </section>
 
-        <section id="inscripcion" class="section form-section">
-            <div class="form-grid" data-aos="zoom-in">
-                <h2 style="text-align: center; margin-bottom: 2rem;">Pre-Inscripción 2026</h2>
-                <form action="https://formspree.io/f/mkoqjwzg" method="POST">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Nombre Completo</label>
-                            <input type="text" id="name" name="name" placeholder="Ej. Juan Pérez" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Correo Electrónico</label>
-                            <input type="email" id="email" name="email" placeholder="juan@ejemplo.com" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone">Teléfono / WhatsApp</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+57 300 000 0000">
-                        </div>
-                        <div class="form-group">
-                            <label for="bootcamp">Bootcamp de interés</label>
-                            <select id="bootcamp" name="bootcamp" required>
-                                <option value="" disabled selected>Selecciona un programa</option>
-                                <option value="prog">Programación Fullstack</option>
-                                <option value="ia">Inteligencia Artificial</option>
-                                <option value="data">Análisis de Datos</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn submit-btn">Registrarme Gratis</button>
-                </form>
+        <section id="modalidades" class="section">
+            <h2 data-aos="fade-up">Modalidades de Formación</h2>
+            <div class="cards">
+                <div class="card" data-aos="flip-left" data-aos-delay="100">
+                    <i class="ph-bold ph-monitor"
+                        style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                    <h3>Virtual Sincrónica</h3>
+                    <p>Clases en vivo con expertos desde cualquier lugar del país. Flexibilidad total con interacción en
+                        tiempo real.</p>
+                </div>
+                <div class="card" data-aos="flip-right" data-aos-delay="200">
+                    <i class="ph-bold ph-buildings"
+                        style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h3>Presencial Híbrida</h3>
+                    <p>Asiste a nuestras sedes físicas para sesiones intensivas y networking directo con compañeros y
+                        mentores.</p>
+                </div>
             </div>
         </section>
 
@@ -85,22 +71,54 @@
 
                 <div class="card" data-aos="fade-up" data-aos-delay="100">
                     <img src="programming.png" alt="Programación Fullstack">
-                    <h3>Programación</h3>
-                    <p>Domina el desarrollo web moderno, desde el frontend hasta bases de datos avanzadas.</p>
+                    <h3>Programación Web Fullstack</h3>
+                    <p>Domina el desarrollo de software de extremo a extremo. Aprende HTML, CSS, JavaScript, bases de
+                        datos y frameworks modernos como React o Node.js. Ideal para crear aplicaciones web escalables.
+                    </p>
                 </div>
 
                 <div class="card" data-aos="fade-up" data-aos-delay="200">
                     <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=600"
                         alt="IA">
                     <h3>Inteligencia Artificial</h3>
-                    <p>Aprende a construir modelos de Machine Learning y sistemas inteligentes generativos.</p>
+                    <p>Sumérgete en el Machine Learning y procesamiento del lenguaje natural. Aprende a entrenar
+                        modelos, trabajar con redes neuronales y desarrollar soluciones inteligentes que transforman
+                        industrias.</p>
                 </div>
 
                 <div class="card" data-aos="fade-up" data-aos-delay="300">
                     <img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&q=80&w=600"
                         alt="Data Analysis">
                     <h3>Análisis de Datos</h3>
-                    <p>Convierte información en conocimiento estratégico mediante visualización y estadística.</p>
+                    <p>Aprende a recopilar, limpiar y visualizar grandes volúmenes de datos. Domina herramientas como
+                        Python, SQL y Power BI para generar insights estratégicos que faciliten la toma de decisiones.
+                    </p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=600"
+                        alt="Blockchain">
+                    <h3>Blockchain</h3>
+                    <p>Comprende los fundamentos de la descentralización. Desarrolla contratos inteligentes, tokens y
+                        aplicaciones descentralizadas (dApps) en la red de Ethereum y otras plataformas líderes.</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=600"
+                        alt="Cloud Computing">
+                    <h3>Arquitectura en la Nube</h3>
+                    <p>Diseña y gestiona infraestructuras escalables en la nube. Domina servicios como AWS o Azure para
+                        optimizar procesos tecnológicos, garantizar disponibilidad y mejorar la eficiencia operativa.
+                    </p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600"
+                        alt="Cybersecurity">
+                    <h3>Ciberseguridad</h3>
+                    <p>Especialízate en la protección de sistemas y redes. Aprende técnicas de criptografía, gestión de
+                        incidentes y defensa contra ciberataques para asegurar la integridad de la información digital.
+                    </p>
                 </div>
 
             </div>
@@ -126,6 +144,18 @@
                     <i class="ph-bold ph-handshake"></i>
                     <h3>Networking</h3>
                     <p>Conecta con líderes tecnológicos y accede a oportunidades exclusivas de empleo.</p>
+                </div>
+
+                <div class="card benefit-card" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="ph-bold ph-strategy"></i>
+                    <h3>Niveles Progresivos</h3>
+                    <p>Formación adaptada: niveles Explorador, Integrador e Innovador según tus conocimientos.</p>
+                </div>
+
+                <div class="card benefit-card" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="ph-bold ph-identification-card"></i>
+                    <h3>Requisitos</h3>
+                    <p>Ser mayor de 18 años y de nacionalidad colombiana para participar en el programa.</p>
                 </div>
 
             </div>
