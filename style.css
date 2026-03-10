@@ -260,6 +260,12 @@ nav a:hover {
   box-shadow: 0 0 20px var(--primary-glow);
 }
 
+.form-group select option {
+  background-color: #1e293b;
+  /* Gris oscuro/azulado legible */
+  color: white;
+}
+
 .submit-btn {
   width: 100%;
   border: none;
