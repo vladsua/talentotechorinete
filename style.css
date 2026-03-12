@@ -266,6 +266,15 @@ nav a:hover {
   color: white;
 }
 
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
 .submit-btn {
   width: 100%;
   border: none;
@@ -292,6 +301,98 @@ footer {
 
 footer p {
   color: var(--text-muted);
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(8px);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 3rem;
+  border-radius: 32px;
+  border: 1px solid var(--glass-border);
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: var(--text-muted);
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+  color: var(--accent);
+}
+
+/* Password Toggle Styles */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper i {
+  position: absolute;
+  right: 1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.password-wrapper i:hover {
+  color: var(--accent);
+}
+
+/* Auth Tabs */
+.auth-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+}
+
+.auth-tab.active {
+  background: var(--primary-glow);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.auth-tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 @media (max-width: 968px) {
