@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso | Talento Tech Oriente</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1), transparent);
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+        }
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #f87171;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo" style="text-decoration: none;">Talento Tech</a>
+        <nav>
+            <a href="index.html">Volver al Inicio</a>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="form-grid">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="tab-login">Iniciar Sesión</div>
+                    <div class="auth-tab" id="tab-register">Registrarse</div>
+                </div>
+
+                <div id="error-box" class="error-message"></div>
+
+                <!-- Form Login -->
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="l-email">Correo Electrónico</label>
+                        <input type="email" id="l-email" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="l-password">Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="l-password" placeholder="••••••••" required>
+                            <i class="ph-bold ph-eye toggle-pwd" data-target="l-password"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn submit-btn" style="width: 100%;">Entrar</button>
+                </form>
+
+                <!-- Form Register -->
+                <form id="register-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="r-nombre">Nombre Completo</label>
+                        <input type="text" id="r-nombre" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="r-email">Correo Electrónico</label>
+                        <input type="email" id="r-email" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="r-password">Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="r-password" placeholder="Mínimo 8 car., Mayús., Minús. y Símbolo" required>
+                            <i class="ph-bold ph-eye toggle-pwd" data-target="r-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="r-password-confirm">Verificar Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="r-password-confirm" placeholder="Repite tu contraseña" required>
+                            <i class="ph-bold ph-eye toggle-pwd" data-target="r-password-confirm"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn submit-btn" style="width: 100%;">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Supabase Configuration - COLOCAR NUEVOS DATOS AQUÍ
+        const SUPABASE_URL = 'https://twfmzprqssfsoubefjfy.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_mC8422ooUui5OGQmSwhuRg_hTleXq1N';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const errorBox = document.getElementById('error-box');
+
+        function showError(msg) {
+            errorBox.textContent = msg;
+            errorBox.style.display = 'block';
+        }
+
+        function hideError() {
+            errorBox.style.display = 'none';
+        }
+
+        // Tabs
+        tabLogin.onclick = () => {
+            tabLogin.classList.add('active');
+            tabRegister.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            hideError();
+        };
+
+        tabRegister.onclick = () => {
+            tabRegister.classList.add('active');
+            tabLogin.classList.remove('active');
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            hideError();
+        };
+
+        // Password Toggles
+        document.querySelectorAll('.toggle-pwd').forEach(icon => {
+            icon.onclick = function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const type = input.type === 'password' ? 'text' : 'password';
+                input.type = type;
+                this.classList.toggle('ph-eye');
+                this.classList.toggle('ph-eye-slash');
+            };
+        });
+
+        // Login Logic
+        loginForm.onsubmit = async (e) => {
+            e.preventDefault();
+            hideError();
+            const email = document.getElementById('l-email').value;
+            const password = document.getElementById('l-password').value;
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                if (error.message.includes("Invalid login credentials")) {
+                    showError("El usuario no está registrado o la contraseña es incorrecta. Por favor, regístrate si eres nuevo.");
+                } else {
+                    showError(error.message);
+                }
+            } else {
+                localStorage.setItem('user_name', data.user.user_metadata.full_name || email);
+                window.location.href = 'index.html';
+            }
+        };
+
+        // Register Logic
+        registerForm.onsubmit = async (e) => {
+            e.preventDefault();
+            hideError();
+            const nombre = document.getElementById('r-nombre').value;
+            const email = document.getElementById('r-email').value;
+            const password = document.getElementById('r-password').value;
+            const confirm = document.getElementById('r-password-confirm').value;
+
+            if (password !== confirm) {
+                showError("Las contraseñas no coinciden.");
+                return;
+            }
+
+            // Validación de contraseña robusta
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                showError("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo.");
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: { data: { full_name: nombre } }
+            });
+
+            if (error) {
+                showError(error.message);
+            } else {
+                alert("¡Registro exitoso! Por favor revisa tu correo para confirmar la cuenta.");
+                tabLogin.click();
+            }
+        };
+    </script>
+
+</body>
+</html>

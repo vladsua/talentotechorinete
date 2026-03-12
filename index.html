@@ -29,6 +29,7 @@
             <a href="#bootcamps">Bootcamps</a>
             <a href="#beneficios">Beneficios</a>
             <a href="#contacto">Contacto</a>
+            <a href="acceso.html" id="nav-auth-btn">Ingresar</a>
             <a class="btn" style="padding: 0.6rem 1.5rem; font-size: 0.9rem;" href="inscripcion.html">Inscribirme</a>
         </nav>
     </header>
@@ -164,60 +165,38 @@
             </div>
         </section>
         <section id="contacto" class="section form-section">
-            <h2 data-aos="fade-up">Interactúa con nosotros</h2>
+            <h2 data-aos="fade-up">Caja de Comentarios</h2>
             <div class="form-grid" data-aos="zoom-in">
                 
-                <!-- 1. Recuadro Inicial de Selección -->
-                <div id="auth-selection" style="text-align: center; padding: 2rem 0;">
-                    <p style="margin-bottom: 2rem; color: var(--text-muted); font-size: 1.1rem;">Para dejar un comentario, primero dinos quién eres:</p>
-                    <div class="form-row">
-                        <button type="button" class="btn" onclick="showAuthForm('register')" style="width: 100%;">Soy Nuevo (Registrarme)</button>
-                        <button type="button" class="btn" onclick="showAuthForm('login')" style="background: var(--card-bg); border: 1px solid var(--primary); width: 100%;">Ya tengo cuenta (Ingresar)</button>
-                    </div>
+                <!-- Vista para Usuarios NO logueados -->
+                <div id="no-auth-view" style="text-align: center; padding: 2rem;">
+                    <i class="ph-bold ph-lock" style="font-size: 4rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
+                    <p style="margin-bottom: 2rem; color: var(--text-muted); font-size: 1.1rem;">Debes iniciar sesión para poder dejar un comentario.</p>
+                    <a href="acceso.html" class="btn">Ir a Iniciar Sesión / Registrarse</a>
                 </div>
 
-                <!-- 2. Formulario de Autenticación (Oculto inicialmente) -->
-                <form id="main-auth-form" style="display: none;">
-                    <h3 id="auth-title" style="margin-bottom: 1.5rem; color: var(--accent);"></h3>
-                    
-                    <div id="register-fields">
-                        <div class="form-group">
-                            <label for="nombres">Nombres</label>
-                            <input type="text" id="nombres" name="nombres" placeholder="Tu nombre completo">
-                        </div>
+                <!-- Vista para Usuarios Logueados -->
+                <div id="auth-view" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+                        <h3 style="color: var(--accent);">Hola, <span id="user-name-tag"></span></h3>
+                        <button onclick="handleLogout()" class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: transparent; border: 1px solid rgba(255,255,255,0.1);">Cerrar Sesión</button>
                     </div>
 
-                    <div class="form-row">
+                    <form id="comment-form">
                         <div class="form-group">
-                            <label for="correo">Correo Electrónico</label>
-                            <input type="email" id="correo" name="email" placeholder="ejemplo@correo.com" required>
+                            <label for="c-mensaje">Tu Comentario</label>
+                            <textarea id="c-mensaje" rows="4" placeholder="¿Qué piensas de nuestros bootcamps?" required></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <div class="password-wrapper">
-                                <input type="password" id="password" name="password" placeholder="••••••••" required>
-                                <i class="ph-bold ph-eye" id="togglePassword"></i>
-                            </div>
-                        </div>
-                    </div>
+                        <button type="button" id="btn-submit-comment" class="btn submit-btn" style="width: 100%;">Publicar Comentario</button>
+                    </form>
+                </div>
 
-                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                        <button type="button" id="btn-auth-action" class="btn submit-btn" style="flex: 2;"></button>
-                        <button type="button" class="btn" onclick="resetView()" style="flex: 1; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,255,255,0.1); margin-top: 0;">Cancelar</button>
+                <!-- Lista de Comentarios -->
+                <div id="comments-display" style="margin-top: 3rem; text-align: left;">
+                    <h3 style="color: var(--accent); margin-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.5rem;">Comentarios Recientes</h3>
+                    <div id="comments-list">
+                        <p style="color: var(--text-muted);">Cargando comentarios...</p>
                     </div>
-                </form>
-
-                <!-- 3. Formulario de Comentarios (Oculto hasta login) -->
-                <div id="comment-section" style="display: none; text-align: left;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <h3 style="color: var(--accent);">Bienvenido, <span id="user-display-name"></span></h3>
-                        <button type="button" onclick="logout()" class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: transparent; border: 1px solid var(--glass-border);">Cerrar Sesión</button>
-                    </div>
-                    <div class="form-group">
-                        <label for="comentarios">Escribe tu comentario</label>
-                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="¿Qué piensas de nuestros bootcamps?"></textarea>
-                    </div>
-                    <button type="button" id="btn-send-comment" onclick="handleCommentSubmission()" class="btn submit-btn" style="width: 100%;">Enviar Comentario</button>
                 </div>
 
             </div>
@@ -234,115 +213,112 @@
 
     <!-- Supabase and Logic Script -->
     <script>
-        // Supabase Configuration
-        const SUPABASE_URL = 'https://twfmzprqssfsoubefjfy.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_mC8422ooUui5OGQmSwhuRg_hTleXq1N';
+        // Supabase Configuration - COLOCAR NUEVOS DATOS AQUÍ
+        const SUPABASE_URL = 'https://twfmzprqssfsoubefjfy.supabase.co'; 
+        const SUPABASE_KEY = 'sb_publishable_mC8422ooUui5OGQmSwhuRg_hTleXq1N'; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        // UI State Management
-        let currentMode = 'register';
-        const authSelection = document.getElementById('auth-selection');
-        const authForm = document.getElementById('main-auth-form');
-        const commentSection = document.getElementById('comment-section');
-        const registerFields = document.getElementById('register-fields');
-        const authTitle = document.getElementById('auth-title');
-        const btnAuthAction = document.getElementById('btn-auth-action');
-        const userNameSpan = document.getElementById('user-display-name');
-
-        function showAuthForm(mode) {
-            currentMode = mode;
-            authSelection.style.display = 'none';
-            authForm.style.display = 'block';
-            
-            if (mode === 'register') {
-                authTitle.textContent = 'Crear Nueva Cuenta';
-                btnAuthAction.textContent = 'Registrarme';
-                registerFields.style.display = 'block';
-            } else {
-                authTitle.textContent = 'Ingresar a mi Cuenta';
-                btnAuthAction.textContent = 'Iniciar Sesión';
-                registerFields.style.display = 'none';
-            }
-        }
-
-        function resetView() {
-            authSelection.style.display = 'block';
-            authForm.style.display = 'none';
-            commentSection.style.display = 'none';
-        }
-
-        async function logout() {
-            await supabaseClient.auth.signOut();
-            resetView();
-        }
 
         // AOS initialization
         AOS.init({ duration: 1000, once: true, offset: 100 });
 
-        // Password Toggle
-        const togglePassword = document.querySelector('#togglePassword');
-        const passwordInput = document.querySelector('#password');
-        if (togglePassword) {
-            togglePassword.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.classList.toggle('ph-eye');
-                this.classList.toggle('ph-eye-slash');
+        // Function to load comments
+        async function loadComments() {
+            const listElement = document.getElementById('comments-list');
+            const { data, error } = await supabaseClient
+                .from('comentarios')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                listElement.innerHTML = `<p style="color: #ff4444;">Error al cargar comentarios: ${error.message}</p>`;
+                return;
+            }
+
+            if (data.length === 0) {
+                listElement.innerHTML = `<p style="color: var(--text-muted);">Aún no hay comentarios. ¡Sé el primero!</p>`;
+                return;
+            }
+
+            listElement.innerHTML = data.map(c => `
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid var(--glass-border);">
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong style="color: var(--accent); font-size: 1.1rem;">${c.nombre}</strong>
+                    </div>
+                    <p style="color: var(--text-light);">${c.comentario}</p>
+                </div>
+            `).join('');
+        }
+
+        // Auth Check
+        async function checkUser() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            const noAuthView = document.getElementById('no-auth-view');
+            const authView = document.getElementById('auth-view');
+            const navAuthBtn = document.getElementById('nav-auth-btn');
+            const userNameTag = document.getElementById('user-name-tag');
+
+            if (user) {
+                noAuthView.style.display = 'none';
+                authView.style.display = 'block';
+                navAuthBtn.textContent = 'Cerrar Sesión';
+                navAuthBtn.href = '#';
+                navAuthBtn.onclick = handleLogout;
+                userNameTag.textContent = user.user_metadata.full_name || user.email;
+            } else {
+                noAuthView.style.display = 'block';
+                authView.style.display = 'none';
+                navAuthBtn.textContent = 'Ingresar';
+                navAuthBtn.href = 'acceso.html';
+                navAuthBtn.onclick = null;
+            }
+        }
+
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            window.location.reload();
+        }
+
+        // Handle Form Submission
+        const btnSubmit = document.getElementById('btn-submit-comment');
+        if (btnSubmit) {
+            btnSubmit.addEventListener('click', async () => {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                const comentario = document.getElementById('c-mensaje').value;
+
+                if (!comentario) {
+                    alert('Por favor escribe un comentario');
+                    return;
+                }
+
+                btnSubmit.textContent = 'Enviando...';
+                btnSubmit.disabled = true;
+
+                const { error } = await supabaseClient
+                    .from('comentarios')
+                    .insert([{ 
+                        nombre: user.user_metadata.full_name || user.email, 
+                        comentario: comentario,
+                        user_id: user.id
+                    }]);
+
+                if (error) {
+                    alert('Error al enviar: ' + error.message);
+                } else {
+                    alert('¡Comentario publicado!');
+                    document.getElementById('c-mensaje').value = '';
+                    loadComments();
+                }
+
+                btnSubmit.textContent = 'Publicar Comentario';
+                btnSubmit.disabled = false;
             });
         }
 
-        // Auth Submission
-        btnAuthAction.addEventListener('click', async () => {
-            const email = document.getElementById('correo').value;
-            const password = document.getElementById('password').value;
-
-            if (currentMode === 'register') {
-                const nombres = document.getElementById('nombres').value;
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email, password, options: { data: { full_name: nombres } }
-                });
-                if (error) alert('Error: ' + error.message);
-                else {
-                    alert('¡Registro exitoso! Por favor confirma tu correo.');
-                    showCommentArea(nombres || email);
-                }
-            } else {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) alert('Error: ' + error.message);
-                else {
-                    showCommentArea(data.user.user_metadata.full_name || email);
-                }
-            }
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadComments();
+            checkUser();
         });
-
-        function showCommentArea(name) {
-            authForm.style.display = 'none';
-            commentSection.style.display = 'block';
-            userNameSpan.textContent = name;
-        }
-
-        async function handleCommentSubmission() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) return alert('Debes estar logueado');
-
-            const comentario = document.getElementById('comentarios').value;
-            if (!comentario) return alert('Escribe algo primero');
-
-            const { error } = await supabaseClient
-                .from('comentarios')
-                .insert([{
-                    nombres: user.user_metadata.full_name || 'Usuario',
-                    correo: user.email,
-                    comentario: comentario,
-                    user_id: user.id
-                }]);
-
-            if (error) alert('Error al enviar: ' + error.message);
-            else {
-                alert('¡Gracias por tu comentario!');
-                document.getElementById('comentarios').value = '';
-            }
-        }
     </script>
 
     <!-- Chatbot Chatbase -->
